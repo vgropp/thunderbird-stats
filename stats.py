@@ -38,9 +38,6 @@ def stats():
 	for root,_,files in os.walk(maildir):
 		for f in files:
 			_,file_extension = os.path.splitext(f)
-			# get single mail files
-			if file_extension == '.eml':
-				mailfiles.append(os.path.join(root, f))
 			# get directory information: unread mails count
 			if file_extension == '.msf':
 				for line in reversed(list(open(os.path.join(root, f), 'r', encoding='latin1'))):
@@ -49,6 +46,8 @@ def stats():
 						end = line.find(')]', start)
 						meta['total']['unread'] += int(line[start:end], 16)
 						break
+			else:
+				mailfiles.append(os.path.join(root, f))
 
 	# process all mail files to get data
 	for f in tqdm(mailfiles, unit='mails', mininterval=0.05):
@@ -126,7 +125,7 @@ def stats():
 				mails_per_weekday['total'][mailtype][maildate.tm_wday] += 1
 				# build number of mails per weekday per hour
 				mails_per_weekday_per_hour['total'][mailtype][maildate.tm_wday][maildate.tm_hour] += 1
-				if email[mailtype] is not '':
+				if email[mailtype] != '':
 					# build meta data
 					meta[email[mailtype]][mailtype] += 1
 					meta[email[mailtype]]['total'] += 1
