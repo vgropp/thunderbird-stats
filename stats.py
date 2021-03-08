@@ -126,7 +126,7 @@ def stats():
 				mails_per_weekday['total'][mailtype][maildate.tm_wday] += 1
 				# build number of mails per weekday per hour
 				mails_per_weekday_per_hour['total'][mailtype][maildate.tm_wday][maildate.tm_hour] += 1
-				if email[mailtype] is not '':
+				if email[mailtype] != '':
 					# build meta data
 					meta[email[mailtype]][mailtype] += 1
 					meta[email[mailtype]]['total'] += 1
